@@ -3,7 +3,7 @@ export interface Task {
   createAt: Date;
   description: string;
   active: boolean;
-  _links: {
+  _links?: {
     self: { href: string };
     update: { href: string };
     delete: { href: string };
