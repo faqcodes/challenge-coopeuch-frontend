@@ -1,6 +1,6 @@
 # Desafío Coopeuch Frontend
 
-A continuación se presenta la solución (diseño e implementación) del desafío Coopeuch correspondiente al frontend. El desafío consta de una parte en el frontend y una parte en el backend que se puede encontrar [AQUÍ](https://github.com/faqcodes/challenge-coopeuch-backend). El enunciado del desafío se encuentra [AQUÍ](docs/images/challenge.png)
+A continuación se presenta la solución (diseño e implementación) del desafío Coopeuch correspondiente al frontend. El desafío consta de una parte en el frontend y una parte en el backend que se puede encontrar en el siguiente enlace [challenge-coopeuch-backend](https://github.com/faqcodes/challenge-coopeuch-backend). El enunciado del desafío se encuentra en este [ENLACE](docs/images/challenge.png)
 
 ## Diseño
 
@@ -8,13 +8,10 @@ En esta parte del frontend se diseña la interfaz de usuario que permitirá la a
 
 ![Diagrama de la solucion](docs/images/challenge-diagram-01.png)
 
-```
-Disclaimer: Como esto es un diseño preliminar, es posible que la interfaz de usuario final no sea como el presentado
-```
+#### Disclaimer: Como esto es un diseño preliminar, es posible que la interfaz de usuario final no sea como el presentado
 
-````
-Se ha optado por trabajar con RTK Query para integración con el backend. Por lo tanto, la imagen arriba no refleja el total comporatamiento de la aplicación
-```
+### Se ha optado por trabajar con RTK Query para integración con el backend. Por lo tanto, la imagen arriba no refleja el total comporatamiento de la aplicación
+
 
 ## Getting Started
 
@@ -28,20 +25,20 @@ cd challenge-coopeuch-frontend
 ```
 
 Instalar las dependencias
-````
-npm i
-````
+```
+npm install
+```
 
 Construir la aplicación
-````
+```
 npm run build
-````
+```
 
 Ejecutar el proyecto. Se ejecutarán las pruebas de la aplicación y se desplegará en el puerto <b>5173<b>
 
-``````
+```
 npm run start
-``````
+```
 
 ### La aplicación se encuentra configurada para que apunte al puerto <b>8090</b> de la aplicación backend y para que esta aplicación funcione correctamente, se debe ejecutar primero el backend
 
