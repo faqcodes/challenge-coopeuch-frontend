@@ -1,5 +1,5 @@
 export interface TaskInput {
-  taskId: number;
+  taskId?: number;
   description: string;
   active: boolean;
 }

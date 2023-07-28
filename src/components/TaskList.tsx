@@ -1,9 +1,14 @@
 
-import { useGetTasksQuery } from '../features/tasks/task-api-slice'
+import { useDeleteTaskMutation, useGetTasksQuery } from '../features/tasks/task-api-slice'
 import { Task } from '../models/task'
 
 export const TaskList = () => {
-  const { data, isLoading, isFetching, isError } = useGetTasksQuery();
+  const { data: message, isLoading, isFetching, isError } = useGetTasksQuery();
+  const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
+
+  const handleDeleteTask = (id: number) => {
+    deleteTask(id);
+  };
 
   if (isError) return <div>An error has occurred!</div>
 
@@ -20,12 +25,12 @@ export const TaskList = () => {
             <th></th>
           </tr>
           {
-            data?.data.map((task: Task) => (
+            message?.data.map((task: Task) => (
               <tr key={task.taskId}>
                 <td>{task.description}</td>
                 <td>{task.createAt.toString()}</td>
-                <td>{task.active}</td>
-                <td></td>
+                <td>{task.active.toString()}</td>
+                <td><button onClick={() => handleDeleteTask(task.taskId)}>DELETE</button></td>
               </tr>
             ))
           }
