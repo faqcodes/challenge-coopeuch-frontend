@@ -49,10 +49,7 @@ const TaskForm = ({ task, onCancel }: { task?: Task, onCancel?: () => void }) =>
 
         await updateTask(taskData).unwrap()
 
-        if (onCancel) {
-          clear()
-          onCancel();
-        }
+        onCancelEdit();
       }
       // Si no se seleccionado, se crea
       else {
