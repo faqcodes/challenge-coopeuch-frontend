@@ -2,11 +2,11 @@
 import { useDeleteTaskMutation, useGetTasksQuery } from '../features/tasks/task-api-slice'
 import { Task } from '../models/task'
 
-export const TaskList = () => {
+export const TaskList = ({ onEditTask }: {onEditTask: (task: Task) => void}) => {
   const { data: message, isLoading, isFetching, isError } = useGetTasksQuery();
   const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
 
-  const handleDeleteTask = (id: number) => {
+  const onDeleteTask = (id: number) => {
     deleteTask(id);
   };
 
@@ -15,7 +15,7 @@ export const TaskList = () => {
   if (isLoading) return <div>loding...</div>
 
   return (
-    <div className={isFetching ? 'tasks--disabled' : ''}>
+    <div>
       <table>
         <tbody>
           <tr>
@@ -30,7 +30,10 @@ export const TaskList = () => {
                 <td>{task.description}</td>
                 <td>{task.createAt.toString()}</td>
                 <td>{task.active.toString()}</td>
-                <td><button onClick={() => handleDeleteTask(task.taskId)}>DELETE</button></td>
+                <td>
+                  <button onClick={() => onEditTask(task)}>Editar</button>
+                  <button onClick={() => onDeleteTask(task.taskId)}>Eliminar</button>
+                </td>
               </tr>
             ))
           }

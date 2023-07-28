@@ -5,6 +5,7 @@ import { Task } from '../models/task';
 import { TaskInput } from '../models/task-input';
 
 const TaskForm = ({ task, onCancel }: { task?: Task, onCancel?: () => void }) => {
+  const [id, setId] = useState(task?.taskId ?? 0);
   const [active, setActive] = useState<boolean>(task?.active ?? true);
   const [description, setDescription] = useState(task?.description ?? '');
 
@@ -13,35 +14,44 @@ const TaskForm = ({ task, onCancel }: { task?: Task, onCancel?: () => void }) =>
 
   useEffect(() => {
     if (task) {
+      setId(task.taskId);
       setActive(task.active);
       setDescription(task.description);
     }
   }, [task]);
 
-  const handleSubmit = () => {
+  const clear = () => {
+    setId(0);
+    setActive(true);
+    setDescription('');
+  }
+
+  const onSubmit = async () => {
     const taskData: TaskInput = {
       active,
       description,
     };
 
     if (task) {
-      updateTask(taskData);
+        taskData.taskId = id;
 
-      if (onCancel) {
-        onCancel();
-      }
+        await updateTask(taskData).unwrap()
+
+        if (onCancel) {
+          clear()
+          onCancel();
+        }
     } else {
       createTask(taskData);
     }
 
-    setActive(true);
-    setDescription('');
+    clear();
   };
 
   return (
     <div>
-      <h1>{task ? 'Edit Task' : 'Create Task'}</h1>
-      <form onSubmit={handleSubmit}>
+      <div>{task ? 'Actualizar Tarea' : 'Crear Tarea'}</div>
+      <form onSubmit={onSubmit}>
         <label>
           Description:
           <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
@@ -59,7 +69,7 @@ const TaskForm = ({ task, onCancel }: { task?: Task, onCancel?: () => void }) =>
               : (isCreating ? 'Agregando...' : 'Agregar')
           }
         </button>
-        {task && <button type="button" onClick={onCancel}>Cancel</button>}
+        {task && <button type="button" onClick={onCancel}>Cancelar</button>}
       </form>
     </div>
   );
