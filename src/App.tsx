@@ -1,11 +1,13 @@
-import logo from "./logo.svg"
 import "./App.css"
+import { TaskList } from './components/TaskList'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-      </header>
+      <section>
+        <div>Administración de Tareas</div>
+        <TaskList />
+      </section>
     </div>
   )
 }

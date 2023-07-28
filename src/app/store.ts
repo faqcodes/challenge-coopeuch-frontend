@@ -1,17 +1,10 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
-import taskReducer from '../features/tasks/tasksSlice'
+import { taskApi } from '../features/tasks/task-api-slice';
 
 export const store = configureStore({
   reducer: {
-    task: taskReducer,
+    [taskApi.reducerPath]: taskApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(taskApi.middleware)
 })
-
-export type AppDispatch = typeof store.dispatch
-export type RootState = ReturnType<typeof store.getState>
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->
