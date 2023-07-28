@@ -20,7 +20,7 @@ describe('TaskForm', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Description')).toBeVisible();
+    expect(screen.getByText('Descripción')).toBeVisible();
     expect(screen.getByText('Vigente')).toBeVisible();
 
     expect(screen.getByText('Agregar')).toBeVisible();    

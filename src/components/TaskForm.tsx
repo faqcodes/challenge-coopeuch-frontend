@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { useCreateTaskMutation, useUpdateTaskMutation } from '../features/tasks/task-api-slice';
 import { Task } from '../models/task';
 import { TaskInput } from '../models/task-input';
+import Button from '@mui/material/Button';
+import '../App.css';
+import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
 
 const TaskForm = ({ task, onCancel }: { task?: Task, onCancel?: () => void }) => {
   const [id, setId] = useState(task?.taskId ?? 0);
@@ -26,13 +30,21 @@ const TaskForm = ({ task, onCancel }: { task?: Task, onCancel?: () => void }) =>
     setDescription('');
   }
 
+  const onCancelEdit = () => {
+    if (onCancel) {
+      clear()
+      onCancel();
+    }
+  }
+
   const onSubmit = async () => {
     const taskData: TaskInput = {
       active,
       description,
     };
-
-    if (task) {
+    try {
+      // Si se ha seleccionado una tarea, se edita
+      if (task) {
         taskData.taskId = id;
 
         await updateTask(taskData).unwrap()
@@ -41,8 +53,17 @@ const TaskForm = ({ task, onCancel }: { task?: Task, onCancel?: () => void }) =>
           clear()
           onCancel();
         }
-    } else {
-      createTask(taskData);
+      }
+      // Si no se seleccionado, se crea
+      else {
+        createTask(taskData);
+      }
+
+    } catch (error) {
+      return <div>
+        <div>Ha ocurrido un error</div>
+        <div>Detalle: {JSON.stringify(error)}</div>
+      </div>
     }
 
     clear();
@@ -50,26 +71,30 @@ const TaskForm = ({ task, onCancel }: { task?: Task, onCancel?: () => void }) =>
 
   return (
     <div>
-      <div>{task ? 'Actualizar Tarea' : 'Crear Tarea'}</div>
       <form onSubmit={onSubmit}>
-        <label>
-          Description:
-          <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-        </label>
-        <br />
-        <label>
-          Vigente:
-          <input type="checkbox" checked={active} onChange={(e) => setActive(e.target.checked)} />
-        </label>
-        <br />
-        <button type="submit">
-          {
-            task
-              ? (isUpdating ? 'Actualizando...' : 'Actualizar')
-              : (isCreating ? 'Agregando...' : 'Agregar')
-          }
-        </button>
-        {task && <button type="button" onClick={onCancel}>Cancelar</button>}
+        <table className="App-table-with">
+          <tbody>
+            <tr>
+              <th>Descripción:</th>
+              <th>Vigente:</th>
+              <th></th>
+            </tr>
+            <tr>
+              <td><TextField required value={description} onChange={(e) => setDescription(e.target.value)} className="App-table-with" label="campo requerido" variant="outlined" size="small" /></td>
+              <td><Checkbox checked={active} onChange={(e) => setActive(e.target.checked)} defaultChecked /></td>
+              <td>
+                <Button variant="contained" color="success" size="small" type="submit" disabled={description.length === 0}>
+                  {
+                    task
+                      ? (isUpdating ? 'Actualizando...' : 'Actualizar')
+                      : (isCreating ? 'Agregando...' : 'Agregar')
+                  }
+                </Button>
+                {task && <Button variant="contained" color="warning" size="small" type="button" onClick={onCancelEdit}>Cancelar</Button>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </form>
     </div>
   );
